@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Mininet</title>
+
+		<meta name="description" content="O Mininet é uma plataforma que permite de forma simples fazer experiências com o OpenFlow e as redes definidas por software.">
+		<meta name="author" content="André Santos, Helena Alves e Daniel Araújo">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>Mininet</h1>
+					<h3>Emulador para uma rápida prototipagem de redes definidas por software</h3>
+					<p>
+						<small>André Santos a60994 <br> Helena Alves a61000<br> Daniel Araújo a61058</small>
+					</p>
+				</section>
+
+				<section>
+					<section>
+
+						<h2>Explicação básica</h2>
+						<p>O Mininet é um software de emulação de redes. Nesse sentido é possível criar uma rede virtual com bastante aproximação à realidade, correndo um kernel, o código do switch e das aplicações numa única máquina (que podes ser nativa, virtual ou na cloud). A interação com este software é efectuada apartir de uma CLI (Interface de Linha de Comandos) ou da API disponibilizada em Python.</p>
+
+					</section>
+					<section>
+
+						<h2>Redes definidas por Software</h2>
+						<p>As redes definidas por software(RDS) são um paradigma emergente para Redes de computa-
+dores. Nas RDS o plano de controlo é implementado por software, isto permite que uma unidade
+lógica separada controle o comportamento da rede inteira.</p>
+
+					</section>
+					<section>
+
+						<h2>Open Flow</h2>
+						<p>É um protocolo que permite utilizar um set de funções que é comum em muitos routers e switches, de forma a criar redes definidas por software.</p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Instalação</h2>
+						<p>
+							Para começar a utilizar o Mininet é necessário a instalação do software. Existem duas possibilidades de instalação:
+							<ul>
+							<li>Máquina Virtual do Mininet</li>
+							<li>Instalação nativa em Ubuntu</li>
+						    </ul>
+						</p>
+					</section>
+
+					<section>
+						<h2>Máquina Virtual do Mininet</h2>
+						<p>
+							A instalação da máquina virtual do Mininet é a maneira mais fácil e infalível para começar a
+							utilizar a plataforma, como também é a forma de instalação mais recomendada.
+						</p>
+					</section>
+					<section>
+						<h3>Passos de instalação</h3>	
+						<ul>
+							<li>Download da imagem da máquina virtual em https://github.com/mininet/mininet/downloads/.</li>
+							<li>Download e instalação de um sistema de virtualização</li>
+							<li>Carregar a imagem descomprimida da máquina virtual no sistema de virtualização; </li>
+							<li>Efectuar a autenticação com os seguintes dados:</li>
+							<ul>
+								<li>login: mininet ou openflow</li>
+								<li>password: mininet ou openflow</li>
+						    </ul>
+						    <li>(Opcional) Configurar SSH na máquina virtual.</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Instalação nativa do Mininet(2.0.0) no Ubuntu 11.10</h2>
+						<ul>
+							<li>Fazer clone do repositório com os ficheiros para a instalação do software.<br>
+								(git clone git://github.com/mininet/mininet);</li>
+							<li>Inicar processo de instalação:</li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> mininet/util/install.sh -a
+							</code></pre>
+							<li>Testar funcionalidade do software:<li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo mn --test pingall
+							</code></pre>	
+						</ul>
+					</section>
+
+					<section>
+						<h2>Instalação do Mininet(2.0.0d4) no Ubuntu 12.10</h2>
+						<p>
+							Antes de iniciar a instalação do Mininet devem ser removidos todos os vestígios de versões
+							anteriores do Open vSwitch presentes no sistema.
+						</p>
+						<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo rm /usr/local/bin/ovs* <br>> sudo rm /usr/local/sbin/ovs*<br>> sudo apt-get install mininet
+						</code></pre>
+						<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo mn --test pingall
+						</code></pre>	
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Primeiros passos com o Mininet</h2>
+							<h3>Opções Mininet e ajuda</h3>
+						<ul>
+							<li>Visualizar todos os comandos necessários para uma utilização típica do sotware:</li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo mn -h
+							</code></pre>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Inicializar o Wireshark</h2>
+						<ul>
+							<li>Caso o Mininet esteja instalado nativamente:</li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo apt-get install wireshark
+							</code></pre>
+							<li>Caso esteja a ser utilizada a máquina virtual, é necessário a instalação de um ambiente gráfico:</li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo apt-get install xinit flwm <br>> startx
+							</code></pre>
+							<li>Inicializar o wireshark</li>
+                            <pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo wireshark &
+							</code></pre>
+							<li>Após inicializar o wireshark, vai ser inicializada a caputura de tráfego na interface loopback. Por enquanto, ainda não é possível capturar pacotes OpenFlow.</li>
+						</ul>
+
+					</section>
+					<section>
+						<h2>Interagir Hosts e Switches</h2>
+						<ul>
+							<li>No Mininet é possivel encontrar várias topologias já definidas por defeito;</li>				
+							<li> A topologia padrão definida é a topologia minimal que consiste num OpenFlow kernel switch ligado a dois hosts e ainda o controlador Openflow;</li>
+							<li>Inicializar topologia minimal:</li>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"> sudo mn
+							</code></pre>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li> Todas as 4 unidades da topologia passam a estar a correr na máquina virtual;
+							<li> Como não foi estabelecido nenhum teste específico, na consola é inicializado o Mininet CLI uma vez que não foi estabelecido nenhum teste específico;
+						</ul>
+					</section>
+					<section>
+						<p> Com a linha de comandos do Mininet aberta torna-se possível a execução de comandos como:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> help
+
+> nodes
+
+> net
+
+> dump
+							</code></pre>
+					</section>
+					<section>
+						<p>Se for pretendida a execução de um comando UNIX num determinado nodo da topologia, deve-se referir o nome do nodo no ínicio do comando:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> h2 ifconfig -a
+							</code></pre>
+					</section>
+					<section>
+						<h2>Conectividade entre hosts</h2>
+							<p>Quando é introduzido o nome de um nodo no meio ou no fim de um comando, o nome desse
+nodo é substituido pelo seu endereço IP.</p>				
+							<p> Sendo assim, é possível verificar a conectividade entre dois hosts (ex: h2 e h3), numa topologia, executanto o seguinte comando na consola:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> h2 ping -c 1 h3
+							</code></pre>
+					</section>
+					<section>
+						<h2>Servidor web e cliente</h2>
+							<p>Exemplo de um servidor simples HTTP num host, com o segundo host a enviar um pedido ao primeiro e, por fim, desligar o servidor web.</p>				
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> h2 python -m SimpleHTTPServer 80 &
+
+> h3 wget -O - h2
+
+> h2 kill %python
+							</code></pre>
+					</section>
+					<section>
+						<h2>Sair da CLI e limpar Mininet</h2>
+							<p>Para limpar o estado actual do Mininet, em caso de crashes ou por outra qualquer razão, basta executar o seguinte comando:</p>				
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo mn -c
+							</code></pre>
+							<p>Para sair da CLI apenas é necessário executar o seguinte comando:</p>				
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">> sudo mn -c
+							</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Opçoes avançadas</h2>
+						<h3>Testes de regressão</h3>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> sudo mn --test pingpair
+
+> sudo mn --test iperf
+							</code></pre>
+							<p><b>PINGPAIR:</b> Excuta um ping entre todos os pares de nodos possíveis na topologia minimal.</p>
+							<p><b>IPERF:</b> Corre um iperf server no primeiro host e um cliente no segundo host para testar limites da largura de banda alcançados.</p>
+					</section>
+					<section>
+						<h2>Mudar o tamanho e tipo de uma topologia</h2>
+							<p>A opção --topo associada aos devidos parâmetros permite alterar/criar topologias.</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> sudo mn --test pingall --topo single,3
+
+> sudo mn --test pingall --topo linear,4
+							</code></pre>
+							<p>A parametrização de topologias é uma das grandes vantagens que o Mininet oferece.</p>
+					</section>
+					<section>
+						<h2>Variação dos pârametros de ligação</h2>
+							<p>A partir da versão 2.0 do Mininet é possível definir parâmetros das ligações, em que estes podem ser automaticamente definidos a partir da linha de comandos.</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> sudo mn --link tc,bw=10,delay=10ms
+							</code></pre>
+					</section>
+					<section>
+					<h2>Personalizar topologias</h2>
+					<pre><code contenteditable>
+"""Custom topology example
+
+Two directly connected switches plus a host for each switch:
+
+   host --- switch --- switch --- host
+
+Adding the 'topos' dict with a key/value pair to generate our newly defined
+topology enables one to pass in '--topo=mytopo' from the command line.
+"""
+
+from mininet.topo import Topo
+
+class MyTopo( Topo ):
+    "Simple topology example."
+
+    def __init__( self ):
+        "Create custom topo."
+
+        # Initialize topology
+        Topo.__init__( self )
+
+        # Add hosts and switches
+        leftHost = self.addHost( 'h1' )
+        rightHost = self.addHost( 'h2' )
+        leftSwitch = self.addSwitch( 's3' )
+        rightSwitch = self.addSwitch( 's4' )
+
+        # Add links
+        self.addLink( leftHost, leftSwitch )
+        self.addLink( leftSwitch, rightSwitch )
+        self.addLink( rightSwitch, rightHost )
+
+
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+					</code></pre>
+					<pre><code contenteditable>
+>> sudo mn --custom ~/mininet/custom/topo-2sw-2host.py --topo mytopo --test pingall
+					</code></pre>
+					</section>
+					<section>
+						<h2>Outros tipos de switch</h2>
+							<p>No Mininet é possível trabalhar com diferentes tipos de switch. Para utilizar um switch diferente do por defeito é necessário especificar depois da opção --switch o  seu tipo</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> sudo mn --switch user --test iperf
+
+> sudo mn --switch ovsk --test iperf
+							</code></pre>
+				</section>
+					<section>
+						<h2>Comandos da CLI</h2>
+							<p>Para aceder à CLI (Command-Line Interface) do Mininet basta executar o seguinte comando:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> sudo mn
+							</code></pre>
+							<p>É possível aceder a todos os comandos e opções disponíveis, executando apenas o seguinte comando na CLI:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> help
+							</code></pre>
+				</section>
+					<section>
+						<h2>Interpretador de Phyton</h2>
+							<p>Por vezes é bastante útil a utilização de comandos Phyton para oferecer uma maior escabilidade ao Mininet, assim como melhorar o seu funcionamento interno.<br><br>
+
+Se a primeira palavra do comando for py então esse comando é executado com Phyton.</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> py 'hello ' + 'world'
+							</code></pre>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> py locals()
+
+> py dir(s1)
+
+> py help(h1)
+
+> py h1.IP()
+							</code></pre>
+				</section>
+				<section>
+					<h2>Activar e desctivar ligações</h2>
+					<p>Para alguns testes pode ser bastante útil desactivar e activar ligações entre nodos. Para isso podemos utilizar comandos semelhantes aos seguintes:</p>
+							<pre><code contenteditable style="font-size: 18px; margin-top: 20px;"
+							>> link s1 h1 down
+
+> link s1 h1 up
+							</code></pre>
+				</section>
+				</section>
+				<section>
+					<section>
+						<h2>Trabalhar com o Mininet</h2>
+						<h3>Criar topologias</h3>
+						<p>O Mininet suporta topologias parametrizadas. Isto significa que, com poucas linhas de código Phyton, é possível criar uma topologia flexível, que pode ser configurada pelos parâmetros que lhe sejam passados e reutilizada em diferentes casos.</p>
+					</section>
+					<section>
+					<pre><code contenteditable>
+#!/usr/bin/python
+
+from mininet.topo import Topo
+from mininet.net import Mininet
+from mininet.util import dumpNodeConnections
+from mininet.log import setLogLevel
+
+class SingleSwitchTopo(Topo):
+    "Single switch connected to n hosts."
+    def __init__(self, n=2, **opts):
+        # Initialize topology and default options
+        Topo.__init__(self, **opts)
+        switch = self.addSwitch('s1')
+        # Python's range(N) generates 0..N-1
+        for h in range(n):
+            host = self.addHost('h%s' % (h + 1))
+            self.addLink(host, switch)
+
+def simpleTest():
+    "Create and test a simple network"
+    topo = SingleSwitchTopo(n=4)
+    net = Mininet(topo)
+    net.start()
+    print "Dumping host connections"
+    dumpNodeConnections(net.hosts)
+    print "Testing network connectivity"
+    net.pingAll()
+    net.stop()
+
+if __name__ == '__main__':
+    # Tell mininet to print useful information
+    setLogLevel('info')
+    simpleTest()
+					</code></pre>
+					</section>
+					<section>
+					<p>Algumas das funções, classes e métodos mais importantes na criação de topologias são:</p><small>
+					<ul>
+						<li>Topo: Classe base para as topologias Mininet;
+						</li>
+						<li>addSwitch(): Adiciona um switch à topologia actual e retorna o nome;
+						</li>
+						<li>addHost(): Adiciona um host à topologia actual e retorna o nome;
+						</li>
+						<li>addLink(): Adiciona uma ligação bidireccional à topologia actual e retorna a chave da ligação;
+						</li>
+						<li>Mininet: Classe principal que permite criar e gerir uma rede;
+						</li>
+						<li>start(): Inicia a rede;
+						</li>
+						<li>pingAll(): Testa a conectividade executando o comando ping em todos os pares de nodos possíveis;
+						</li>
+						<li>stop(): Pára a rede;
+						</li>
+						<li>net.hosts: Todos os hosts da rede;
+						</li>
+						<li>dumpNodeConnections(): Faz dump das ligações para/de um conjunto de nodos.
+						</li>
+					</small></ul>
+					</section>
+					<section>
+						<h2>Parâmetros de desempenho</h2>
+					<pre><code contenteditable>
+#!/usr/bin/python
+
+from mininet.topo import Topo
+from mininet.net import Mininet
+from mininet.node import CPULimitedHost
+from mininet.link import TCLink
+from mininet.util import dumpNodeConnections
+from mininet.log import setLogLevel
+
+class SingleSwitchTopo(Topo):
+    "Single switch connected to n hosts."
+    def __init__(self, n=2, **opts):
+        Topo.__init__(self, **opts)
+        switch = self.addSwitch('s1')
+        for h in range(n):
+            # Each host gets 50%/n of system CPU
+            host = self.addHost('h%s' % (h + 1),
+               cpu=.5/n)
+            # 10 Mbps, 5ms delay, 10% loss, 1000 packet queue
+            self.addLink(host, switch,
+	           bw=10, delay='5ms', loss=10, max_queue_size=1000, use_htb=True)
+
+def perfTest():
+    "Create network and run simple performance test"
+    topo = SingleSwitchTopo(n=4)
+    net = Mininet(topo=topo, 
+                  host=CPULimitedHost, link=TCLink)
+    net.start()
+    print "Dumping host connections"
+    dumpNodeConnections(net.hosts)
+    print "Testing network connectivity"
+    net.pingAll()
+    print "Testing bandwidth between h1 and h4"
+    h1, h4 = net.get('h1', 'h4')
+    net.iperf((h1, h4))
+    net.stop()
+
+if __name__ == '__main__':
+    setLogLevel('info')
+    perfTest()
+					</code></pre>
+					</section>
+					<section>
+					<pre><code contenteditable>
+>>self.addHost(name, cpu=f)
+>self.addLink( node1, node2, bw=10, delay='5ms', max_queue_size=1000,
+loss=10, use_htb=True
+					</code></pre>
+					<p>Para tornar a passagem de parâmetros mais simples, é possível criar dicionários Phyton:</p>
+					<pre><code contenteditable>
+linkopts = dict(bw=10, delay='5ms', loss=10, max_queue_size=1000, use_htb=True)
+# alternately: linkopts = {'bw':10, 'delay':'5ms', 'loss':10,
+# max_queue_size=1000, 'use_htb':True}
+self.addLink(node1, node2, **linkopts)
+					</code></pre>
+					</section>
+					<section>
+						<h2>Correr programas nos Hosts</h2>
+					<pre><code contenteditable>
+h1 = net.getNodeByName('h1')    
+result = h1.cmd('ifconfig')
+print result
+					</code></pre>
+					<pre><code contenteditable>
+from time import sleep
+...
+print "Starting test..."
+h1.cmd('while true; do date; sleep 1; done > /tmp/date.out &')
+sleep(10)
+print "Stopping test"
+h1.cmd('kill %while')
+print "Reading output"
+f = open('/tmp/date.out')
+lineno = 1
+for line in f.readlines():
+    print "%d: %s" % ( lineno, line.strip() )
+    lineno += 1
+f.close()
+					</code></pre>
+					</section>
+					<section>
+					<pre><code contenteditable>
+pid = int( h1.cmd('echo $!') )
+
+h1.cmd('wait', pid)
+					</code></pre>
+					<pre><code contenteditable>
+def monitorTest( N=3, seconds=3 ):
+    "Run pings and monitor multiple hosts"
+    topo = SingleSwitchTopo( N )
+    net = Mininet( topo )
+    net.start()
+    hosts = net.hosts
+    print "Starting test..."
+    server = hosts[ 0 ]
+    outfiles, errfiles = {}, {}
+    for h in hosts:
+        # Create and/or erase output files
+        outfiles[ h ] = '/tmp/%s.out' % h.name
+        errfiles[ h ] = '/tmp/%s.err' % h.name
+        h.cmd( 'echo >', outfiles[ h ] )
+        h.cmd( 'echo >', errfiles[ h ] )
+        # Start pings
+        h.cmdPrint('ping', server.IP(),
+                   '>', outfiles[ h ],
+                   '2>', errfiles[ h ],
+                   '&' )
+    print "Monitoring output for", seconds, "seconds"
+    for h, line in monitorFiles( outfiles, seconds, timeoutms=500 ):
+        if h:
+            print '%s: %s' % ( h.name, line )
+    for h in hosts:
+        h.cmd('kill %ping')
+    net.stop()
+					</code></pre>
+					</section>
+					<section>
+						<h2>Métodos de configurção de um host</h2>
+						<p>Os hosts no Mininet oferecem um conjunto de métodos para a configuração de rede:</p>
+						<small>
+					<ul>
+						<li>IP(): Dá como resultado o endereço IP de um host ou de uma entrada espícifica.
+						</li>
+						<li>MAC(): Dá como resultado o endereço MAC de um host ou de uma entrada específica.
+						</li>
+						<li>setARP(): Adiciona uma entrada estática ARP na cache ARP do host.
+						</li>
+						<li>setIP(): Define o endereço IP de uma entrada específica do host;
+						</li>
+						<li>setMAC(): Define o endereço MAC de uma entrada específica do host.</li>
+					</small></ul>
+					<pre><code contenteditable>
+print "Host", h1.name, "has IP address", h1.IP(), "and MAC address", h1.MAC()
+					</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2>Referências</h2>
+					<ul>
+						<li>Mininet Team. Download/Get Started With Mininet. 2012. url: http://mininet.github.
+com/download/.
+						</li>
+						<li>Mininet Team. Introduction to Mininet. 2012. url: https://github.com/mininet/mininet/
+wiki/Introduction-to-Mininet.
+						</li>
+						<li>Mininet Team. Mininet Walkthrough. 2012. url: http://mininet.github.com/walkthrough/.
+						</li>
+						<li>
+						Marcos Rogerio Salvador Mauricio Ferreira Magalhães Christian Esteve Rothenberg Mar-
+celo Ribeiro Nascimento. \OpenFlow e redes definidas por software: um novo paradigma de
+controle e inovacao em redes de pacotes". Em: (2011).</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Mininet</h1>
+					<small>André Santos a60994 <br> Helena Alves a61000<br> Daniel Araújo a61058</small>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
